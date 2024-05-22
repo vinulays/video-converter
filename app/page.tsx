@@ -31,6 +31,23 @@ export default function Home() {
           </div>
         </div>
       </nav>
+      <header className="mx-auto flex flex-col justify-center items-center max-w-3xl text-center py-12 sm:py-28 mt-10 lg:pt-8 xl:pb-0 ">
+        <div className="border bg-blue-50 border-white shadow-lg shadow-blue-200 mb-4 w-44 rounded-full p-1">
+          <div className="w-full text-base">✨ Try it Free!</div>
+        </div>
+        <h1 className="mb-6 pb-4 text-4xl font-bold  md:text-6xl">
+          Seamless Video Conversion, Anytime, Anywhere.
+        </h1>
+        <div className="mx-auto mb-5 max-w-[528px] text-xl text-[#636262] lg:mb-8">
+          Say Goodbye to Server Hassles, Say Hello to Instant Conversion.
+        </div>
+        <a
+          className="hover:scale-105 transition-all inline-block rounded-full bg-blue-700 px-8 py-4 text-center font-bold text-white  hover:border-black hover:bg-blue-500"
+          href="/convert"
+        >
+          Get Started
+        </a>
+      </header>
     </main>
   );
 }
