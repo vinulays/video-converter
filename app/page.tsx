@@ -31,6 +31,7 @@ export default function Home() {
           </div>
         </div>
       </nav>
+      {/* Header */}
       <header className="mx-auto flex flex-col justify-center items-center max-w-3xl text-center py-12 sm:py-28 mt-10 lg:pt-8 xl:pb-0 ">
         <div className="border bg-blue-50 border-white shadow-lg shadow-blue-200 mb-4 w-44 rounded-full p-1">
           <div className="w-full text-base">✨ Try it Free!</div>
@@ -48,6 +49,31 @@ export default function Home() {
           Get Started
         </a>
       </header>
+      <div className="mt-16 mb-16 flex flex-col items-center justify-center divide-y divide-gray-300 sm:flex-row sm:divide-x sm:divide-y-0 md:mt-20">
+        <div className="flex max-w-xs space-x-2 px-4 py-4">
+          <div className="text-gray-600 dark:text-gray-400">
+            Our app stands out by utilizing client-side conversion technology,
+            eliminating the need for server-side processing.
+          </div>
+        </div>
+        <div className="flex max-w-xs space-x-2 px-4 py-4">
+          <div className="text-gray-600 dark:text-gray-400">
+            Say goodbye to subscription fees and hidden charges. Our app offers
+            free access to its powerful conversion.
+          </div>
+        </div>
+        <div className="flex max-w-xs space-x-2 px-4 py-4">
+          <div className="text-gray-600 dark:text-gray-400">
+            With no restrictions on usage, our app provides unlimited
+            conversions for all your media files. Whether you are converting one
+            file or a hundred.
+          </div>
+        </div>
+      </div>
+      <div className="text-center mb-5" role="img" aria-label="love">
+        Made with &#10084;&#65039; by{" "}
+        <a href="https://github.com/vinulays">vinulays</a>
+      </div>
     </main>
   );
 }
