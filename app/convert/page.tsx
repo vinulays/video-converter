@@ -26,8 +26,7 @@ export default function Convert() {
         >
           <input
             ref={inputRef}
-            multiple
-            accept="image/*,.jpg,.jpeg,.png,.gif,.bmp,.webp,.ico,.tif,.tiff,.raw,.tga,audio/*,video/*"
+            accept="video/mp4,video/x-m4v,video/webm,video/*, .mkv"
             tabIndex={-1}
             type="file"
             className="hidden"
@@ -52,8 +51,11 @@ export default function Convert() {
               </svg>
             </div>
             <h3 className="text-center font-medium text-lg md:text-2xl">
-              Click, or drop your files here
+              Select a video file
             </h3>
+            <h5 className="text-center text-sm md:text-base text-gray-400">
+              Supports any video format, any size.
+            </h5>
           </div>
         </div>
       </div>
