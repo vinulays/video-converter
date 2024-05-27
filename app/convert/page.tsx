@@ -1,4 +1,16 @@
+"use client";
+
+import React, { useRef } from "react";
+
 export default function Convert() {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleOuterDivClick = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
   return (
     <main className="pt-14 flex flex-col items-center justify-center px-6">
       <div className="space-y-6">
@@ -10,23 +22,25 @@ export default function Convert() {
         <div
           role="presentation"
           className="bg-background h-72 lg:h-80 xl:h-96 rounded-3xl shadow-sm border-secondary border-2 border-dashed cursor-pointer flex items-center justify-center"
+          onClick={handleOuterDivClick}
         >
           <input
+            ref={inputRef}
             multiple
             accept="image/*,.jpg,.jpeg,.png,.gif,.bmp,.webp,.ico,.tif,.tiff,.raw,.tga,audio/*,video/*"
             tabIndex={-1}
             type="file"
-            style={{ display: "none" }}
+            className="hidden"
           />
           <div className="space-y-4 text-foreground">
             <div className="justify-center flex text-3xl  md:text-4xl lg:text-6xl">
               <svg
                 stroke="currentColor"
                 fill="none"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 height="1em"
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"
