@@ -1,6 +1,13 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Convert() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -103,6 +110,29 @@ export default function Convert() {
               <span className="text-gray-500 ml-1">
                 ({videoFileSize.toFixed(2)} MB)
               </span>
+            </div>
+
+            {/* Video type drop down */}
+            <div className="flex items-center gap-3">
+              <div>Convert to</div>
+              <div>
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select a format" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mp4">MP4</SelectItem>
+                    <SelectItem value="webm">WebM</SelectItem>
+                    <SelectItem value="ogg">OGG</SelectItem>
+                    <SelectItem value="avi">AVI</SelectItem>
+                    <SelectItem value="mkv">MKV</SelectItem>
+                    <SelectItem value="gif">GIF</SelectItem>
+                    <SelectItem value="mov">MOV</SelectItem>
+                    <SelectItem value="wmv">WMV</SelectItem>
+                    <SelectItem value="mpeg">MPEG</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Close button */}
