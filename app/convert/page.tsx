@@ -90,7 +90,7 @@ export default function Convert() {
 
       {/* Video file card */}
       {selectedVideoFile && (
-        <div className="pt-10 container max-w-4xl lg:max-w-6xl 2xl:max-w-7xl">
+        <div className="pt-10 container max-w-4xl lg:max-w-6xl 2xl:max-w-7xl flex-col">
           <div className="px-5 bg-background h-24 rounded-3xl shadow-sm border-secondary border cursor-pointer flex items-center justify-between">
             <div className="flex">
               <span className="text-2xl text-orange-600">
@@ -153,6 +153,12 @@ export default function Convert() {
                 <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
               </svg>
             </div>
+          </div>
+          <div className="flex justify-end mt-5 items-center gap-5">
+            <div>Save Location</div>
+            <button className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44">
+              Convert Now
+            </button>
           </div>
         </div>
       )}
