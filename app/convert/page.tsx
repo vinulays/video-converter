@@ -8,11 +8,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 
 export default function Convert() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedVideoFile, setSelectedVideoFile] = useState<File>();
   const [videoFileSize, setVideoFileSize] = useState<Number>(0);
+  const [outputFormat, setOutputFormat] = useState<string>("mp4");
+  const [outputFileName, setOutputFileName] = useState<string>("");
+  const [convertedVideo, setConvertedVideo] = useState<string | null>(null);
+
+  const ffmpeg = createFFmpeg({ log: true });
 
   const handleOuterDivClick = () => {
     if (inputRef.current) {
@@ -34,6 +40,161 @@ export default function Convert() {
       console.log(`File size: ${sizeInMB.toFixed(2)} MB`);
       setVideoFileSize(sizeInMB);
     }
+  };
+
+  const handleConvert = async () => {
+    if (!selectedVideoFile) return;
+
+    await ffmpeg.load();
+    ffmpeg.FS("writeFile", "input", await fetchFile(selectedVideoFile));
+
+    const outputFileNameWithExtension = `${outputFileName}.${outputFormat}`;
+    let command;
+    switch (outputFormat) {
+      case "webm":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "libvpx",
+          "-c:a",
+          "libvorbis",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "ogg":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "libtheora",
+          "-c:a",
+          "libvorbis",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "avi":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "mpeg4",
+          "-c:a",
+          "mp3",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "mkv":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "libx264",
+          "-c:a",
+          "aac",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "mov":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "libx264",
+          "-c:a",
+          "aac",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "flv":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "flv",
+          "-c:a",
+          "mp3",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "wmv":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "wmv2",
+          "-c:a",
+          "wma",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "mpeg":
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "mpeg1video",
+          "-c:a",
+          "mp2",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "gif":
+        command = ["-i", "input", outputFileNameWithExtension];
+        break;
+      case "mp3":
+        command = ["-i", "input", "-q:a", "0", outputFileNameWithExtension];
+        break;
+      case "aac":
+        command = ["-i", "input", "-c:a", "aac", outputFileNameWithExtension];
+        break;
+      case "wav":
+        command = [
+          "-i",
+          "input",
+          "-c:a",
+          "pcm_s16le",
+          outputFileNameWithExtension,
+        ];
+        break;
+      case "flac":
+        command = ["-i", "input", "-c:a", "flac", outputFileNameWithExtension];
+        break;
+      case "alac":
+        command = ["-i", "input", "-c:a", "alac", outputFileNameWithExtension];
+        break;
+      case "wma":
+        command = ["-i", "input", "-c:a", "wmav2", outputFileNameWithExtension];
+        break;
+      case "aiff":
+        command = [
+          "-i",
+          "input",
+          "-c:a",
+          "pcm_s16be",
+          outputFileNameWithExtension,
+        ];
+        break;
+      default:
+        command = [
+          "-i",
+          "input",
+          "-c:v",
+          "libx264",
+          "-c:a",
+          "aac",
+          outputFileNameWithExtension,
+        ];
+        break;
+    }
+
+    await ffmpeg.run(...command);
+
+    const data = ffmpeg.FS("readFile", outputFileNameWithExtension);
+    const videoUrl = URL.createObjectURL(
+      new Blob([data.buffer], { type: `video/${outputFormat}` })
+    );
+    setConvertedVideo(videoUrl);
   };
 
   return (
@@ -155,7 +316,6 @@ export default function Convert() {
             </div>
           </div>
           <div className="flex justify-end mt-5 items-center gap-5">
-            <div>Save Location</div>
             <button className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44">
               Convert Now
             </button>
