@@ -14,8 +14,9 @@ export default function Convert() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedVideoFile, setSelectedVideoFile] = useState<File>();
   const [videoFileSize, setVideoFileSize] = useState<Number>(0);
+
   const [outputFormat, setOutputFormat] = useState<string>("mp4");
-  const [outputFileName, setOutputFileName] = useState<string>("");
+  const [outputFileName, setOutputFileName] = useState<string>("testvideo");
   const [convertedVideo, setConvertedVideo] = useState<string | null>(null);
 
   const ffmpeg = createFFmpeg({ log: true });
@@ -277,7 +278,7 @@ export default function Convert() {
             <div className="flex items-center gap-3">
               <div>Convert to</div>
               <div>
-                <Select>
+                <Select onValueChange={setOutputFormat}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Select a format" />
                   </SelectTrigger>
@@ -316,9 +317,24 @@ export default function Convert() {
             </div>
           </div>
           <div className="flex justify-end mt-5 items-center gap-5">
-            <button className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44">
+            <button
+              onClick={handleConvert}
+              className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44"
+            >
               Convert Now
             </button>
+
+            {convertedVideo && (
+              <div className="flex justify-center mt-5">
+                <a
+                  href={convertedVideo}
+                  download={outputFileName}
+                  className="text-blue-500 underline"
+                >
+                  Download Converted Video
+                </a>
+              </div>
+            )}
           </div>
         </div>
       )}
