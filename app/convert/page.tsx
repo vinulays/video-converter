@@ -344,7 +344,7 @@ export default function Convert() {
                 </div>
               )}
 
-              {percentage.valueOf() > 0 && (
+              {percentage.valueOf() > 0 && percentage.valueOf() != 100 && (
                 <div className="py-6 flex items-center gap-2">
                   <div className="w-5">
                     <Circle
@@ -354,15 +354,34 @@ export default function Convert() {
                       trailColor="#D3D3D3"
                     />
                   </div>
-                  {percentage.valueOf() != 100 && (
-                    <div>
-                      <span>{remainingTime}</span>
-                    </div>
-                  )}
+
+                  <div>
+                    <span>{remainingTime}</span>
+                  </div>
                 </div>
               )}
 
-              {percentage.valueOf() == 100 && <div>Completed</div>}
+              {percentage.valueOf() == 100 && (
+                <div className="py-6 flex items-center gap-2">
+                  <div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke="#22C55E"
+                      className="size-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                  </div>
+                  <div>Completed</div>
+                </div>
+              )}
             </div>
 
             {/* Close button */}
