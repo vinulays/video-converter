@@ -354,11 +354,15 @@ export default function Convert() {
                       trailColor="#D3D3D3"
                     />
                   </div>
-                  <div>
-                    <span>{remainingTime}</span>
-                  </div>
+                  {percentage.valueOf() != 100 && (
+                    <div>
+                      <span>{remainingTime}</span>
+                    </div>
+                  )}
                 </div>
               )}
+
+              {percentage.valueOf() == 100 && <div>Completed</div>}
             </div>
 
             {/* Close button */}
