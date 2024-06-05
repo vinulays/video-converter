@@ -23,7 +23,6 @@ export default function Convert() {
   const [convertedVideo, setConvertedVideo] = useState<string | null>(null);
 
   const [percentage, setPercentage] = useState<Number>(0);
-  const [startTime, setStartTime] = useState<number>(0);
   const [remainingTime, setRemainingTime] = useState<string>("");
 
   const ffmpeg = createFFmpeg({ log: true });
@@ -207,10 +206,11 @@ export default function Convert() {
         break;
     }
 
-    setStartTime(Date.now());
+    const startTime = Date.now();
 
     ffmpeg.setProgress(({ ratio }) => {
       setPercentage(ratio * 100);
+
       const elapsedTime = (Date.now() - startTime) / 1000;
       const estimatedTotalTime = elapsedTime / ratio;
       const remainingTime = estimatedTotalTime - elapsedTime;
@@ -227,13 +227,20 @@ export default function Convert() {
     setConvertedVideo(videoUrl);
   };
 
-  const formatRemainingTime = (seconds: number) => {
+  const formatRemainingTime = (seconds: number): string => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = Math.floor(seconds % 60);
-    return `${h.toString().padStart(2, "0")}:${m
-      .toString()
-      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+    let formattedTime = "";
+
+    if (h > 0) {
+      formattedTime += `${h}h `;
+    }
+    if (m > 0 || h > 0) {
+      formattedTime += `${m}min `;
+    }
+    formattedTime += `${s}s remaining`;
+    return formattedTime;
   };
 
   return (
@@ -373,23 +380,26 @@ export default function Convert() {
               </svg>
             </div>
           </div>
+
           <div className="flex justify-end mt-5 items-center gap-5">
-            <button
-              disabled={outputFormat == "" ? true : false}
-              onClick={handleConvert}
-              className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44"
-            >
-              Convert Now
-            </button>
+            {!convertedVideo && percentage.valueOf() == 0 && (
+              <button
+                disabled={outputFormat == "" ? true : false}
+                onClick={handleConvert}
+                className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44"
+              >
+                Convert Now
+              </button>
+            )}
 
             {convertedVideo && (
               <div className="flex justify-center mt-5">
                 <a
                   href={convertedVideo}
                   download={outputFileName}
-                  className="text-blue-500 underline"
+                  className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44"
                 >
-                  Download Converted Video
+                  Download
                 </a>
               </div>
             )}
