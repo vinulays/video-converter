@@ -23,6 +23,8 @@ export default function Convert() {
   const [convertedVideo, setConvertedVideo] = useState<string | null>(null);
 
   const [percentage, setPercentage] = useState<Number>(0);
+  const [startTime, setStartTime] = useState<number>(0);
+  const [remainingTime, setRemainingTime] = useState<string>("");
 
   const ffmpeg = createFFmpeg({ log: true });
 
@@ -38,6 +40,9 @@ export default function Convert() {
     setSelectedVideoFile(undefined);
     setVideoFileSize(0);
     setOutputFormat("");
+    setConvertedVideo(null);
+    setPercentage(0);
+    setRemainingTime("");
   };
 
   // * use to display selected video file and the size
@@ -199,6 +204,17 @@ export default function Convert() {
         break;
     }
 
+    setStartTime(Date.now());
+
+    ffmpeg.setProgress(({ ratio }) => {
+      setPercentage(ratio * 100);
+      const elapsedTime = (Date.now() - startTime) / 1000;
+      const estimatedTotalTime = elapsedTime / ratio;
+      const remainingTime = estimatedTotalTime - elapsedTime;
+
+      setRemainingTime(formatRemainingTime(remainingTime));
+    });
+
     await ffmpeg.run(...command);
 
     const data = ffmpeg.FS("readFile", outputFileNameWithExtension);
@@ -206,6 +222,15 @@ export default function Convert() {
       new Blob([data.buffer], { type: `video/${outputFormat}` })
     );
     setConvertedVideo(videoUrl);
+  };
+
+  const formatRemainingTime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, "0")}:${m
+      .toString()
+      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -286,33 +311,43 @@ export default function Convert() {
 
             {/* Video type drop down */}
             <div className="flex items-center gap-3">
-              <div>Converting</div>
-              <div>
-                <Select onValueChange={setOutputFormat}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select a format" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="mp4">MP4</SelectItem>
-                    <SelectItem value="webm">WebM</SelectItem>
-                    <SelectItem value="ogg">OGG</SelectItem>
-                    <SelectItem value="avi">AVI</SelectItem>
-                    <SelectItem value="mkv">MKV</SelectItem>
-                    <SelectItem value="gif">GIF</SelectItem>
-                    <SelectItem value="mov">MOV</SelectItem>
-                    <SelectItem value="wmv">WMV</SelectItem>
-                    <SelectItem value="mpeg">MPEG</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="w-5">
-                <Circle
-                  percent={80}
-                  strokeWidth={15}
-                  strokeColor="#22C55E"
-                  trailColor="#D3D3D3"
-                />
-              </div>
+              {percentage.valueOf() < 0 && <div>Convert to</div>}
+              {percentage.valueOf() < 0 && (
+                <div>
+                  <Select onValueChange={setOutputFormat}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select a format" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="mp4">MP4</SelectItem>
+                      <SelectItem value="webm">WebM</SelectItem>
+                      <SelectItem value="ogg">OGG</SelectItem>
+                      <SelectItem value="avi">AVI</SelectItem>
+                      <SelectItem value="mkv">MKV</SelectItem>
+                      <SelectItem value="gif">GIF</SelectItem>
+                      <SelectItem value="mov">MOV</SelectItem>
+                      <SelectItem value="wmv">WMV</SelectItem>
+                      <SelectItem value="mpeg">MPEG</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              {percentage.valueOf() > 0 && (
+                <div className="py-6 flex items-center gap-2">
+                  <div className="w-5">
+                    <Circle
+                      percent={percentage as number}
+                      strokeWidth={15}
+                      strokeColor="#22C55E"
+                      trailColor="#D3D3D3"
+                    />
+                  </div>
+                  <div>
+                    <span>{remainingTime}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Close button */}
