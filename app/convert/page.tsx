@@ -221,8 +221,20 @@ export default function Convert() {
     await ffmpeg.run(...command);
 
     const data = ffmpeg.FS("readFile", outputFileNameWithExtension);
+
+    const mimeType =
+      outputFormat === "mp3" ||
+      outputFormat === "aac" ||
+      outputFormat === "wav" ||
+      outputFormat === "flac" ||
+      outputFormat === "alac" ||
+      outputFormat === "wma" ||
+      outputFormat === "aiff"
+        ? `audio/${outputFormat}`
+        : `video/${outputFormat}`;
+
     const videoUrl = URL.createObjectURL(
-      new Blob([data.buffer], { type: `video/${outputFormat}` })
+      new Blob([data.buffer], { type: mimeType })
     );
     setConvertedVideo(videoUrl);
   };
