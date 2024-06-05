@@ -8,30 +8,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+import { Circle, Line } from "rc-progress";
 
 export default function Convert() {
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [selectedVideoFile, setSelectedVideoFile] = useState<File>();
   const [videoFileSize, setVideoFileSize] = useState<Number>(0);
 
-  const [outputFormat, setOutputFormat] = useState<string>("mp4");
+  const [outputFormat, setOutputFormat] = useState<string>("");
   const [outputFileName, setOutputFileName] = useState<string>("testvideo");
   const [convertedVideo, setConvertedVideo] = useState<string | null>(null);
 
+  const [percentage, setPercentage] = useState<Number>(0);
+
   const ffmpeg = createFFmpeg({ log: true });
 
+  // * use to select a video file when clicked the square
   const handleOuterDivClick = () => {
     if (inputRef.current) {
       inputRef.current.click();
     }
   };
 
+  // * reset selected video file
   const resetFiles = () => {
     setSelectedVideoFile(undefined);
     setVideoFileSize(0);
+    setOutputFormat("");
   };
 
+  // * use to display selected video file and the size
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
 
@@ -43,6 +52,7 @@ export default function Convert() {
     }
   };
 
+  // * convert selected video
   const handleConvert = async () => {
     if (!selectedVideoFile) return;
 
@@ -276,7 +286,7 @@ export default function Convert() {
 
             {/* Video type drop down */}
             <div className="flex items-center gap-3">
-              <div>Convert to</div>
+              <div>Converting</div>
               <div>
                 <Select onValueChange={setOutputFormat}>
                   <SelectTrigger className="w-[180px]">
@@ -294,6 +304,14 @@ export default function Convert() {
                     <SelectItem value="mpeg">MPEG</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="w-5">
+                <Circle
+                  percent={80}
+                  strokeWidth={15}
+                  strokeColor="#22C55E"
+                  trailColor="#D3D3D3"
+                />
               </div>
             </div>
 
@@ -318,6 +336,7 @@ export default function Convert() {
           </div>
           <div className="flex justify-end mt-5 items-center gap-5">
             <button
+              disabled={outputFormat == "" ? true : false}
               onClick={handleConvert}
               className="justify-center whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 rounded-xl font-semibold relative py-4 text-md flex items-center w-44"
             >
