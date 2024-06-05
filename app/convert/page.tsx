@@ -65,6 +65,7 @@ export default function Convert() {
     ffmpeg.FS("writeFile", "input", await fetchFile(selectedVideoFile));
 
     const outputFileNameWithExtension = `${outputFileName}.${outputFormat}`;
+
     let command;
     switch (outputFormat) {
       case "webm":
@@ -197,6 +198,8 @@ export default function Convert() {
           "input",
           "-c:v",
           "libx264",
+          "-preset",
+          "ultrafast",
           "-c:a",
           "aac",
           outputFileNameWithExtension,
@@ -311,8 +314,8 @@ export default function Convert() {
 
             {/* Video type drop down */}
             <div className="flex items-center gap-3">
-              {percentage.valueOf() < 0 && <div>Convert to</div>}
-              {percentage.valueOf() < 0 && (
+              {percentage.valueOf() == 0 && <div>Convert to</div>}
+              {percentage.valueOf() == 0 && (
                 <div>
                   <Select onValueChange={setOutputFormat}>
                     <SelectTrigger className="w-[180px]">
@@ -328,6 +331,7 @@ export default function Convert() {
                       <SelectItem value="mov">MOV</SelectItem>
                       <SelectItem value="wmv">WMV</SelectItem>
                       <SelectItem value="mpeg">MPEG</SelectItem>
+                      <SelectItem value="mp3">MP3</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
