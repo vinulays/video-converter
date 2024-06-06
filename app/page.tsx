@@ -9,10 +9,10 @@ export default function Home() {
         <div className="border bg-blue-50 border-white shadow-lg shadow-blue-200 mb-4 w-44 rounded-full p-1">
           <div className="w-full text-base">✨ Try it Free!</div>
         </div>
-        <h1 className="mb-6 pb-4 text-4xl font-bold  md:text-6xl">
+        <h1 className="mb-6 mx-3 pb-4 text-3xl font-bold sm:text-6xl">
           Seamless Video Conversion, Anytime, Anywhere.
         </h1>
-        <div className="mx-auto mb-5 max-w-[528px] text-xl text-[#636262] lg:mb-8">
+        <div className="md:mx-auto mx-5  mb-5 max-w-[528px] text-base md:text-xl text-[#636262] lg:mb-8">
           Say Goodbye to Server Hassles, Say Hello to Instant Conversion.
         </div>
         <Link
