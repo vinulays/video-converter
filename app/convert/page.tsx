@@ -311,7 +311,7 @@ export default function Convert() {
       {selectedVideoFile && (
         <div className="pt-10 container max-w-4xl lg:max-w-6xl 2xl:max-w-7xl flex-col">
           <div className="px-5 bg-background h-24 rounded-3xl shadow-sm border-secondary border cursor-pointer flex items-center justify-between">
-            <div className="flex">
+            <div className="flex basis-2/3">
               <span className="text-2xl text-orange-600">
                 <svg
                   stroke="currentColor"
