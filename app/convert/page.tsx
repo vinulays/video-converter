@@ -310,90 +310,98 @@ export default function Convert() {
       {/* Video file card */}
       {selectedVideoFile && (
         <div className="pt-10 container max-w-4xl lg:max-w-6xl 2xl:max-w-7xl flex-col">
-          <div className="px-5 bg-background h-24 rounded-3xl shadow-sm border-secondary border cursor-pointer flex items-center justify-between">
-            <div className="flex basis-2/3">
-              <span className="text-2xl text-orange-600">
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 16 16"
-                  height="1em"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"></path>
-                </svg>
-              </span>
-              <span className="ml-3">{selectedVideoFile.name}</span>
-              <span className="text-gray-500 ml-1">
-                ({videoFileSize.toFixed(2)} MB)
-              </span>
-            </div>
-
-            {/* Video type drop down */}
-            <div className="flex items-center gap-3">
-              {percentage.valueOf() == 0 && <div>Convert to</div>}
-              {percentage.valueOf() == 0 && (
-                <div>
-                  <Select onValueChange={setOutputFormat}>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select a format" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mp4">MP4</SelectItem>
-                      <SelectItem value="webm">WebM</SelectItem>
-                      <SelectItem value="ogg">OGG</SelectItem>
-                      <SelectItem value="avi">AVI</SelectItem>
-                      <SelectItem value="mkv">MKV</SelectItem>
-                      <SelectItem value="gif">GIF</SelectItem>
-                      <SelectItem value="mov">MOV</SelectItem>
-                      <SelectItem value="wmv">WMV</SelectItem>
-                      <SelectItem value="mpeg">MPEG</SelectItem>
-                      <SelectItem value="mp3">MP3</SelectItem>
-                    </SelectContent>
-                  </Select>
+          <div className="px-5 bg-background min-h-24 rounded-3xl shadow-sm border-secondary border cursor-pointer flex gap-5 items-center justify-between">
+            <div className="lg:flex lg:items-center gap-10 py-8">
+              <div className="flex gap-3 items-center">
+                <span className="md:text-2xl text-base text-orange-600">
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 16 16"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"></path>
+                  </svg>
+                </span>
+                <div className="max-w-fit">
+                  <span className="md:text-base text-sm break-all">
+                    {selectedVideoFile.name}
+                  </span>
+                  <span className="text-gray-500 ml-1 md:text-base text-sm">
+                    ({videoFileSize.toFixed(2)} MB)
+                  </span>
                 </div>
-              )}
+              </div>
 
-              {percentage.valueOf() > 0 && percentage.valueOf() != 100 && (
-                <div className="py-6 flex items-center gap-2">
-                  <div className="w-5">
-                    <Circle
-                      percent={percentage as number}
-                      strokeWidth={15}
-                      strokeColor="#22C55E"
-                      trailColor="#D3D3D3"
-                    />
-                  </div>
-
+              {/* Video type drop down */}
+              <div className="flex items-center gap-3 mt-3 lg:mt-0">
+                {percentage.valueOf() == 0 && (
+                  <div className="md:text-base text-sm">Convert to</div>
+                )}
+                {percentage.valueOf() == 0 && (
                   <div>
-                    <span>{remainingTime}</span>
+                    <Select onValueChange={setOutputFormat}>
+                      <SelectTrigger className="max-w-fit">
+                        <SelectValue placeholder="Select a format" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mp4">MP4</SelectItem>
+                        <SelectItem value="webm">WebM</SelectItem>
+                        <SelectItem value="ogg">OGG</SelectItem>
+                        <SelectItem value="avi">AVI</SelectItem>
+                        <SelectItem value="mkv">MKV</SelectItem>
+                        <SelectItem value="gif">GIF</SelectItem>
+                        <SelectItem value="mov">MOV</SelectItem>
+                        <SelectItem value="wmv">WMV</SelectItem>
+                        <SelectItem value="mpeg">MPEG</SelectItem>
+                        <SelectItem value="mp3">MP3</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                </div>
-              )}
+                )}
 
-              {percentage.valueOf() == 100 && (
-                <div className="py-6 flex items-center gap-2">
-                  <div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="#22C55E"
-                      className="size-6"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                {percentage.valueOf() > 0 && percentage.valueOf() != 100 && (
+                  <div className="py-6 flex items-center gap-2">
+                    <div className="w-5">
+                      <Circle
+                        percent={percentage as number}
+                        strokeWidth={15}
+                        strokeColor="#22C55E"
+                        trailColor="#D3D3D3"
                       />
-                    </svg>
+                    </div>
+
+                    <div>
+                      <span>{remainingTime}</span>
+                    </div>
                   </div>
-                  <div>Completed</div>
-                </div>
-              )}
+                )}
+
+                {percentage.valueOf() == 100 && (
+                  <div className="py-6 flex items-center gap-2">
+                    <div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="#22C55E"
+                        className="size-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+                    </div>
+                    <div>Completed</div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Close button */}
@@ -416,7 +424,7 @@ export default function Convert() {
             </div>
           </div>
 
-          <div className="flex justify-end mt-5 items-center gap-5">
+          <div className="flex justify-center lg:justify-end mt-5 items-center gap-5 md:text-base text-sm">
             {!convertedVideo && percentage.valueOf() == 0 && (
               <button
                 disabled={outputFormat == "" ? true : false}
