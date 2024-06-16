@@ -11,6 +11,8 @@ import {
 
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import { Circle, Line } from "rc-progress";
+import { tree } from "next/dist/build/templates/app-page";
+import { kill, stdin } from "process";
 
 export default function Convert() {
   const inputRef = useRef<HTMLInputElement>(null);

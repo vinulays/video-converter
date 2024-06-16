@@ -6,7 +6,7 @@ export default function Home() {
     <main>
       {/* Header */}
       <header className="mx-auto flex flex-col justify-center items-center max-w-3xl text-center py-12 sm:py-28 mt-10 lg:pt-8 xl:pb-0 ">
-        <div className="border bg-blue-50 border-white shadow-lg shadow-blue-200 mb-4 w-44 rounded-full p-1">
+        <div className="border bg-red-50 border-white shadow-lg shadow-red-200 mb-4 w-44 rounded-full p-1">
           <div className="w-full text-base">✨ Try it Free!</div>
         </div>
         <h1 className="mb-6 mx-3 pb-4 text-3xl font-bold sm:text-6xl">
@@ -16,7 +16,7 @@ export default function Home() {
           Say Goodbye to Server Hassles, Say Hello to Instant Conversion.
         </div>
         <Link
-          className="hover:scale-105 transition-all inline-block rounded-full bg-blue-700 px-8 py-4 text-center font-bold text-white  hover:border-black hover:bg-blue-500"
+          className="hover:scale-105 transition-all inline-block rounded-full bg-[#FD0054] px-8 py-4 text-center font-bold text-white  hover:border-black hover:bg-[#A80038]"
           href="/convert"
         >
           Get Started
